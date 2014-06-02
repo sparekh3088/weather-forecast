@@ -20,44 +20,46 @@ function SPWeatherReport($scope, $http, $templateCache) {
 		
 		if( $scope.spCities ) {
 			angular.forEach($scope.spCities.split(','), function(city){
-				city = city.trim();
-				$scope.cities.push({name: city, text: 'City'});
-				$index = $scope.cities.length - 1;
-				$scope.report[city] = Array();
-				$scope.report[city]["loading"] = true;
-				$scope.url = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + city + '&cnt=14&APPID=a1d92644a413999cfc40d23bdf3a6e88';
-				
-				$http({method: $scope.method, url: $scope.url, cache: $templateCache, responseType: 'JSON'}).
-				success(function(data, status) {
-					if( 200 == status ) {
-						lat = data.city.coord.lat;
-						lon = data.city.coord.lon;
-						$scope.cities[$index].lat = lat.toFixed(2);
-						$scope.cities[$index].lon = lon.toFixed(2);
-						$city = data.city.name;
-						$scope.report[$city]["weather"] = Array();
-						var dt = new Date();
-						
-						angular.forEach( data.list, function( $report ) { 
-							dt.setTime($report.dt * 1000);
-							$report.dt = dt.toDateString();
+				if( city ) {
+					city = city.trim();
+					$scope.cities.push({name: city, text: 'City'});
+					$index = $scope.cities.length - 1;
+					$scope.report[city] = Array();
+					$scope.report[city]["loading"] = true;
+					$scope.url = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + city + '&cnt=14&APPID=a1d92644a413999cfc40d23bdf3a6e88';
+					
+					$http({method: $scope.method, url: $scope.url, cache: $templateCache, responseType: 'JSON'}).
+					success(function(data, status) {
+						if( 200 == status ) {
+							lat = data.city.coord.lat;
+							lon = data.city.coord.lon;
+							$scope.cities[$index].lat = lat.toFixed(2);
+							$scope.cities[$index].lon = lon.toFixed(2);
+							$city = data.city.name;
+							$scope.report[$city]["weather"] = Array();
+							var dt = new Date();
 							
-							if( $scope.report[$city]["weather"].length == 0 ) {
-								$report.dt = "Today";
-							}
-							
-							$report.weather = $report.weather[0];
-							$scope.report[$city]["weather"].push($report);
-						});
-						$scope.report[$city]["loading"] = false;
-					} else {
-						alert( 'Error fetching data' );
-					}
-				}).
-				error(function(data, status) {
-					$scope.data = data || "Request failed";
-					$scope.status = status;
-				});
+							angular.forEach( data.list, function( $report ) { 
+								dt.setTime($report.dt * 1000);
+								$report.dt = dt.toDateString();
+								
+								if( $scope.report[$city]["weather"].length == 0 ) {
+									$report.dt = "Today";
+								}
+								
+								$report.weather = $report.weather[0];
+								$scope.report[$city]["weather"].push($report);
+							});
+							$scope.report[$city]["loading"] = false;
+						} else {
+							alert( 'Error fetching data' );
+						}
+					}).
+					error(function(data, status) {
+						$scope.data = data || "Request failed";
+						$scope.status = status;
+					});
+				}
 			});
 			$scope.spCities = '';
 		} else {
