@@ -1,22 +1,65 @@
 <!DOCTYPE HTML>
 <html lang="en">
 	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Weather Forecast</title>
+		<link rel="stylesheet" href="css/foundation.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="js/vendor/modernizr.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.10/angular.min.js"></script>
-		<!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script-->
-		<script src="searchWhether.js"></script>
+		<script src="js/searchWhether.js"></script>
 	</head>
 	<body ng-app="">
 		<div ng-controller="SPWeatherReport">
-			<div class=''>
-				<label>Cities( Separated by comma ):</label>
-				<input type="text" ng-model="spCities" placeholder="Enter a city names" size="30">
-				<button class="btn-primary" ng-click="searchWeather()" type="submit" >Search</button>
+			<div class='row'>
+				<div class='large-12 columns'>
+					<h2>Weather Forecast</h2>
+				</div>
+				<div class='large-9 columns'>
+					<div class="row collapse">
+						<div class="small-9 columns">
+							<input type="text" placeholder="Enter a city names" ng-model="spCities">
+						</div>
+						<div class="small-3 columns">
+							<button class="button postfix" ng-click="searchWeather()">Search</button>
+						</div>
+					</div>
+				</div>
+				<div class='large-3 columns'>
+					<button class="button postfix" ng-click="searchWeatherCoord()">Current location</button>
+				</div>
+				<div class="large-12 columns" ng-show="showMessage">
+					<div class="alert-box alert large-4 columns">
+						Please enter the city name in the box
+					</div>
+				</div>
 			</div>
-			 <ul class="unstyled">
-				<li ng-repeat="city in cities">
-				<input type="text" ng-model="city.name" val='{{city.name}}' />
-				</li>
-			</ul>
+			<div class='row'>
+				<div class='large-12 columns' ng-repeat="city in cities">
+					<div class='cityDetails row'>
+						<h4 class='city large-6 columns'>{{city.text}}: {{city.name}}</h4><h4 class="large-6 columns">Latitude: {{city.lat}} Longitude: {{city.lon}}</h4>
+					</div>
+					<div class="progress large-12 columns" ng-show="report[city.name]['loading']"> Loading... </div>
+					<ul class='small-block-grid-2 medium-block-grid-3 large-block-grid-4'>
+						<li ng-repeat="rep in report[city.name]['weather']" class="weatherDaily">
+							<div class="weather">
+								<div class="date columns">
+									<img src='http://openweathermap.org/img/w/{{rep.weather.icon}}.png' /><span>{{rep.dt}}</span>
+								</div>
+								<div class="panel columns">
+									<div class="row">
+										<span class="large-12 columns capitalize">{{rep.weather.description}}</span>
+										<span class="large-12 columns">Temp: {{number=(rep.temp.day - 273.15) | number:2}} &deg;C</span>
+										<span class="large-6 columns">Min: {{number=(rep.temp.min - 273.15) | number:2}} &deg;C</span>
+										<span class="large-6 columns">Max: {{number=(rep.temp.max - 273.15) | number:2}} &deg;C</span>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
