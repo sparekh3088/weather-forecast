@@ -1,4 +1,4 @@
-whether-forecast
+weather-forecast
 ================
 
-Whether report for the cities entered.
+Weather report for the cities entered.
