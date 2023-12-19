@@ -1,7 +1,8 @@
-.date{
-	background-color: #248BAA;
-	padding: 0.7rem;
+.date {
+  background-color: #248baa;
+  padding: 0.7rem;
+  color: white;
 }
 .capitalize {
-	text-transform: capitalize;
+  text-transform: capitalize;
 }
