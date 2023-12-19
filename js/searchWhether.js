@@ -3,7 +3,7 @@ var currentCityCoord = { lat: null, lon: null };
 function SPWeatherReport($scope, $http, $templateCache) {
   $scope.method = "GET";
   $scope.url =
-    "http://api.openweathermap.org/data/2.5/forecast/daily?q=Rajkot&cnt=14&APPID=a1d92644a413999cfc40d23bdf3a6e88";
+    "https://api.openweathermap.org/data/2.5/forecast/daily?q=Rajkot&cnt=14&APPID=a1d92644a413999cfc40d23bdf3a6e88";
   $scope.cities = Array();
   $scope.report = Array();
   $scope.showMessage = false;
@@ -32,7 +32,7 @@ function SPWeatherReport($scope, $http, $templateCache) {
           $scope.report[city] = Array();
           $scope.report[city]["loading"] = true;
           $scope.url =
-            "http://api.openweathermap.org/data/2.5/forecast/daily?q=" +
+            "https://api.openweathermap.org/data/2.5/forecast/daily?q=" +
             city +
             "&cnt=14&APPID=a1d92644a413999cfc40d23bdf3a6e88";
 
@@ -93,7 +93,7 @@ function SPWeatherReport($scope, $http, $templateCache) {
 
     if (currentCityCoord.lat != null && currentCityCoord.lon != null) {
       $scope.url =
-        "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+        "https://api.openweathermap.org/data/2.5/forecast?lat=" +
         currentCityCoord.lat +
         "&lon=" +
         currentCityCoord.lon +
